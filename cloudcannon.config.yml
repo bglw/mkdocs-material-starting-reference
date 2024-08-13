@@ -1,0 +1,80 @@
+# Collections allow you to show groups of related content in the Site Navigation with each collection generally corresponding to a folder in your site files.
+# Docs: https://cloudcannon.com/documentation/articles/defining-your-collections/
+collections_config:
+  pages:
+    name: Getting Started
+    icon: home
+    path: "docs"
+    output: true
+    filter:
+      base: strict
+      exclude:
+        - /schema
+        - schema.json
+  setup:
+    name: Setup
+    icon: settings
+    path: "docs/setup"
+    output: true
+  reference:
+    name: Reference
+    icon: article
+    path: "docs/reference"
+    output: true
+  data:
+    path: "data"
+
+collection_groups:
+  - heading: Documentation
+    collections:
+      - pages
+      - setup
+      - reference
+  - heading: Data
+    collections:
+      - data
+
+_snippets_imports:
+  python_markdown_extensions:
+    include:
+      - python_markdown_admonition
+      - python_markdown_collapsible_admonition
+      - python_markdown_button
+      - python_markdown_reference_button
+      - python_markdown_diagram
+      - python_markdown_code_block
+      - python_markdown_footnote
+      - python_markdown_footnote_marker
+      - python_markdown_icon
+      - python_markdown_inline_code
+      - python_markdown_mathjax
+      - python_markdown_inline_mathjax
+      - python_markdown_tabs
+      - python_markdown_marker
+      - python_markdown_block_snippet
+      - python_markdown_image
+      - python_markdown_reference_image
+      - python_markdown_reference_template_image
+      - python_markdown_reference_link
+      - python_markdown_link
+      - python_markdown_reference
+      - python_markdown_abbreviation
+      - python_markdown_reference_template
+_snippets:
+  result:
+    template: python_markdown_markdown_in_html
+    inline: false
+    preview:
+      text: Result
+    definitions:
+      tag_name: div
+      content_key: content
+      tag_attributes:
+        - source_key: class
+          type: string
+          default: result
+          allowed_values:
+            - result
+    _inputs:
+      content:
+        type: markdown

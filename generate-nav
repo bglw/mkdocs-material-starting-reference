@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+
+# Check if the nav file exists, otherwise just use the default MkDocs nav configuration
+if test -f "./data/nav.yml"; then
+    printf '# This file is generated from /data/nav.yml by running node ./js/generate-nav.js\n# Or to use the default MkDocs nav configuration delete the nav.yml file\nnav:\n' > ./data/generated-nav.yml
+    PATH=""
+    while IFS= read line; do
+        [[ -z $line ]] && continue               # skip blank lines
+        [[ ${line[0]} = "#"* ]] && continue      # skip comments
+        [[ ${line[0]} = "nav"* ]] && continue    # skip the first nav
+        [[ ${line[0]} = "_"* ]] && break         # skip rest of file if line is CC config
+
+        # get key
+        [[ ${line[0]} =~ \s*\t*[^a-z]- ]] && KEY=${line#*-} KEY=${KEY%\:*} || KEY=${line%\:*}
+        # get value
+        VALUE=${line#*:}
+
+
+        # Print the path on its own line if its for the index page, otherwise print it on the same line as the key
+        # IF you hit key nav then put the file on a seperate line, otherwise same line
+        if [[ $KEY =~ \s*\t*nav ]] && [ "$PATH" != "" ]; then
+            printf -- "\n%s  -%s\n" "$LEADING_WHITESPACE" "$PATH"
+            PATH=""
+        elif [ "$PATH" != "" ]; then
+            printf "%s\n" "$PATH"
+            PATH=""
+        elif [[ $KEY =~ \s*\t*nav ]]; then
+            echo
+        fi
+
+        # Get the leading whitespace so the nesting is correct
+        LEADING_WHITESPACE="${line/[^[:space:]]*/}"
+
+        # Output the key
+        [[ $KEY =~ \s*\t*name ]] && echo -n "$LEADING_WHITESPACE" && printf -- "-%s:" "$VALUE"
+        
+        # Set the path in path variable so it can be accessed on the next iteration of the loop
+        [[ $KEY =~ \s*\t*path ]] && PATH=$VALUE
+
+
+
+    done < ./data/nav.yml >> ./data/generated-nav.yml # Read from the first file and write to the second file
+    printf "%s\n" "$PATH" >> ./data/generated-nav.yml
+else
+    printf '# You are currently using the default MkDocs config\n# To override, create the nav.yml file' > ./data/generated-nav.yml
+fi

@@ -1,0 +1,9 @@
+{
+  "ssg": "mkdocs",
+  "build_configuration": {
+    "preserved_paths": ".cache/",
+    "install_command": "pip install -r requirements.txt --cache-dir .cache",
+    "build_command": "mkdocs build",
+    "output_path": "site"
+  }
+}

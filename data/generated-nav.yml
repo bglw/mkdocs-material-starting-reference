@@ -1,0 +1,15 @@
+# This file is generated from /data/nav.yml by running node ./js/generate-nav.js
+# Or to use the default MkDocs nav configuration delete the nav.yml file
+nav:
+  - Home: index.md
+  - Getting started:
+      - Customization: customization.md
+      - Philosophy: philosophy.md
+      - License: license.md
+  - Setup:
+      - setup/index.md
+      - Changing the colors: setup/changing-the-colors.md
+      - Changing the fonts: setup/changing-the-fonts.md
+      - Extensions:
+          - setup/extensions/index.md
+          - Python Markdown: setup/extensions/python-markdown.md
